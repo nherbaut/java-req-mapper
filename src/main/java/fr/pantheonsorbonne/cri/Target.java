@@ -1,5 +1,6 @@
 package fr.pantheonsorbonne.cri;
 
+import java.util.Set;
 import java.util.concurrent.Callable;
 
 import org.slf4j.Logger;
@@ -15,7 +16,10 @@ public class Target {
 
 	@RuntimeType
 	public static Object intercept(@SuperCall Callable<?> zuper, @AllArguments Object... args) throws Exception {
-		LOG.info(new StackTraceParser(Thread.getAllStackTraces().get(Thread.currentThread())).toString());
+		Set<String> reqs = new StackTraceParser(Thread.getAllStackTraces().get(Thread.currentThread())).getReqs();
+		if (!reqs.isEmpty())
+			LOG.info("associated user stories:" + reqs.toString());
+
 		return zuper.call();
 	}
 }

@@ -58,7 +58,7 @@
 				<version>3.8.0</version>
 				<configuration>
 					<release>10</release>
-					<verbose>true</verbose>
+
 				</configuration>
 			</plugin>
 
@@ -107,6 +107,27 @@
 			<artifactId>org.eclipse.jgit</artifactId>
 			<version>5.2.1.201812262042-r</version>
 		</dependency>
+
+
+		<dependency>
+			<groupId>com.github.javaparser</groupId>
+			<artifactId>javaparser-core</artifactId>
+			<version>3.13.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.javaparser</groupId>
+			<artifactId>javaparser-symbol-solver-core</artifactId>
+			<version>3.13.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>27.0.1-jre</version>
+		</dependency>
+
+
 
 	</dependencies>
 

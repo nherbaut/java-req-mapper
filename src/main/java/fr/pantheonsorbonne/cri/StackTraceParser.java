@@ -1,7 +1,16 @@
 package fr.pantheonsorbonne.cri;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import com.google.common.base.Strings;
+
 public class StackTraceParser {
-	
+
 	public static final String ANSI_RESET = "\u001B[0m";
 	public static final String ANSI_BLACK = "\u001B[30m";
 	public static final String ANSI_RED = "\u001B[31m";
@@ -18,21 +27,33 @@ public class StackTraceParser {
 		this.elements = elements;
 	}
 
-	@Override
-	public String toString() {
+	public Set<String> getReqs() {
 
-		StringBuilder sb = new StringBuilder(ANSI_GREEN).append("\n");
+		Set<String> res = new HashSet<>();
 		for (StackTraceElement elt : elements) {
-			if (elt.getClassName().startsWith(Agent.INSTRUMENTED_PACKAGE) && elt.getLineNumber()!=-1) {
-				sb.append(elt.getClassName());
-				sb.append("\t");
-				sb.append(elt.getMethodName().split("\\$")[0]);
-				sb.append("\t").append(elt.getLineNumber());
-				sb.append("\n");
+			if (elt.getClassName().startsWith(Agent.INSTRUMENTED_PACKAGE) && elt.getLineNumber() != -1) {
+				String classNAme = elt.getClassName();
+				String methodName = elt.getMethodName().split("\\$")[0];
+				Integer lineNumber = elt.getLineNumber();//can we use that?
+
+				
+				for (ReqMatcher m : Agent.reqMatchers) {
+					if (m.getClassName().equals(classNAme)) {
+						if (m.getMethodName().equals(methodName)) {
+
+							for (String reqStr : m.getReq()) {
+								if (!Strings.isNullOrEmpty(reqStr)) {
+									res.add(reqStr);
+								}
+							}
+
+						}
+					}
+				}
+
 			}
 		}
-		sb.append(ANSI_RESET);
-		return sb.toString();
+		return res;
 
 	}
 }
