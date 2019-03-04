@@ -29,9 +29,11 @@ public class Agent {
 	public static final Logger LOG = LoggerFactory.getLogger(Agent.class);
 	public static final String INSTRUMENTED_PACKAGE = "fr.pantheonsorbonne.ufr27";
 	public static final String REPO_ADDRESS = "file:///home/nherbaut/workspace/basic-cli-uni.git";
+	public static final String GRPC_ENDPOINT_HOST="localhost";
+	public static final String GRPC_ENDPOINT_PORT="8080";
 	public static final HashSet<ReqMatcher> reqMatchers = new HashSet<>();
 	
-	public static final Scheduler scheduler = CustomScheduler.newFixedRateSchedule(0, 5, TimeUnit.SECONDS);
+	
 
 	public static void premain(String arg, Instrumentation instZ) {
 		
