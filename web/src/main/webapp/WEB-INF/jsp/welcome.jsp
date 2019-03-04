@@ -35,7 +35,13 @@
 
 		<div class="starter-template">
 			<h1>Live Requirements Console</h1>
-			
+
+			<ul>
+				<c:forEach items="${message}" var="item">
+					<li>${item }</li>
+				</c:forEach>
+			</ul>
+
 		</div>
 
 	</div>
@@ -43,6 +49,7 @@
 
 	<script type="text/javascript"
 		src="webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/main.js"></script>
 
 </body>
 

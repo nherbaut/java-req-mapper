@@ -11,6 +11,7 @@ package requirements;
 service ReqCollector {
 
   rpc pushRequirement(stream Requirement) returns (Empty) {};
+  rpc pullRequirement(Empty) returns (stream Requirement) {};
 }
 
 
