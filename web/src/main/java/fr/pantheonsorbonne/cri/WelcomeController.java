@@ -1,4 +1,4 @@
-package com.mkyong;
+package fr.pantheonsorbonne.cri;
 
 import java.util.Map;
 

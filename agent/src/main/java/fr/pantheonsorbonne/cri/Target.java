@@ -18,7 +18,8 @@ public class Target {
 	public static Object intercept(@SuperCall Callable<?> zuper, @AllArguments Object... args) throws Exception {
 		Set<String> reqs = new StackTraceParser(Thread.getAllStackTraces().get(Thread.currentThread())).getReqs();
 		if (!reqs.isEmpty())
-			LOG.info("associated user stories:" + reqs.toString());
+			for (String req : reqs)
+				Agent.sendReq(req);
 
 		return zuper.call();
 	}
