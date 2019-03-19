@@ -1,4 +1,4 @@
-package fr.pantheonsorbonne.cri;
+package fr.pantheonsorbonne.cri.req;
 
 import java.util.Arrays;
 import java.util.HashSet;

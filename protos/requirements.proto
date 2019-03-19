@@ -19,6 +19,7 @@ message Empty {}
 
 message Requirement {
    string id = 1;
+   string issueURI=2;
    
 }
 

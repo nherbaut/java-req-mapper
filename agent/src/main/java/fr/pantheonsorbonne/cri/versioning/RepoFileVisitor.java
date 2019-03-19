@@ -1,13 +1,13 @@
-package fr.pantheonsorbonne.cri;
+package fr.pantheonsorbonne.cri.versioning;
 
 import java.nio.CharBuffer;
 import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -41,7 +41,13 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.visitor.VoidVisitor;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import com.google.common.io.CharStreams;
-import com.google.common.io.Files;
+
+import com.google.inject.Inject;
+import com.google.inject.Provides;
+
+import fr.pantheonsorbonne.cri.configuration.AppConfigurationVariables;
+import fr.pantheonsorbonne.cri.configuration.ConfigurationVariableProvider;
+import fr.pantheonsorbonne.cri.req.ReqMatcher;
 
 import static java.nio.file.FileVisitResult.*;
 
@@ -52,17 +58,28 @@ import java.io.IOException;
 
 public class RepoFileVisitor extends SimpleFileVisitor<Path> {
 
-	private final String REPO_SRC_DIR = "src/main/java/";
 	private Git repo;
 	private final Map<String, Map<Integer, String>> blameData = new HashMap<>();
-	private final Set<ReqMatcher> reqMatcher = new HashSet<>();
+	private final Set<ReqMatcher> reqMatchers = new HashSet<>();
+	private final Path sourceRootDir;
 
 	public Set<ReqMatcher> getReqMatcher() {
-		return reqMatcher;
+		return reqMatchers;
 	}
 
-	public RepoFileVisitor(Git repo) {
-		this.repo = repo;
+	public RepoFileVisitor(ConfigurationVariableProvider vars) {
+		this.sourceRootDir = new File(vars.getSourceRootDir()).toPath();
+		try {
+
+			Path tempFolder = Files.createTempDirectory("nhe-agent");
+			repo = Git.cloneRepository().setURI(vars.getRepoAddress()).setDirectory(tempFolder.toFile()).call();
+			Files.walkFileTree(tempFolder, this);
+			reqMatchers.addAll(this.getReqMatcher());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(-1);
+		}
 	}
 
 	@Override
@@ -111,7 +128,7 @@ public class RepoFileVisitor extends SimpleFileVisitor<Path> {
 					Optional<Position> pos;
 					if ((pos = md.getBegin()).isPresent()) {
 						if (blameData.containsKey(this.className)) {
-							reqMatcher.add(new ReqMatcher(this.className, md.getNameAsString(), pos.get().line,
+							reqMatchers.add(new ReqMatcher(this.className, md.getNameAsString(), pos.get().line,
 									blameData.get(this.className).get(pos.get().line)));
 						}
 
@@ -159,7 +176,8 @@ public class RepoFileVisitor extends SimpleFileVisitor<Path> {
 
 		File relativeFilePath = this.repo.getRepository().getDirectory().getParentFile().toPath().relativize(file)
 				.toFile();
-		if (attr.isRegularFile() && Files.getFileExtension(relativeFilePath.toString()).equals("java")) {
+		if (attr.isRegularFile()
+				&& com.google.common.io.Files.getFileExtension(relativeFilePath.toString()).equals("java")) {
 
 			BlameCommand blamer = new BlameCommand(this.repo.getRepository());
 			ObjectId commitID = this.repo.getRepository().resolve("HEAD");
@@ -182,9 +200,8 @@ public class RepoFileVisitor extends SimpleFileVisitor<Path> {
 
 			}
 
-			String inferedClassName = 
-							new File(REPO_SRC_DIR).toPath().relativize(relativeFilePath.toPath()).toString()
-					.replaceAll("/", ".").replaceFirst("[.][^.]+$","");
+			String inferedClassName = this.sourceRootDir.relativize(relativeFilePath.toPath())
+					.toString().replaceAll("/", ".").replaceFirst("[.][^.]+$", "");
 			this.blameData.put(inferedClassName, fileBlameData);
 
 		}

@@ -38,7 +38,7 @@
 
 			<ul>
 				<c:forEach items="${message}" var="item">
-					<li>${item }</li>
+					<li><a href="${item.getIssueURI()}">${item.getId()}</a></li>
 				</c:forEach>
 			</ul>
 

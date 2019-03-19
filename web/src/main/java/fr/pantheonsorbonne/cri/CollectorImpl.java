@@ -24,7 +24,7 @@ public class CollectorImpl extends ReqCollectorImplBase {
 				if (SpringBootWebApplication.req.size() > 10) {
 					SpringBootWebApplication.req.pop();
 				}
-				SpringBootWebApplication.req.addLast(value.getId());
+				SpringBootWebApplication.req.addLast(value);
 
 			}
 

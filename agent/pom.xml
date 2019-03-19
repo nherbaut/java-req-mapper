@@ -115,12 +115,13 @@
 
 		</pluginManagement>
 		<plugins>
+
 			<plugin>
 				<groupId>org.xolstice.maven.plugins</groupId>
 				<artifactId>protobuf-maven-plugin</artifactId>
 				<version>0.6.1</version>
 				<configuration>
-						<protocArtifact>com.google.protobuf:protoc:3.5.1-1:exe:${os.detected.classifier}</protocArtifact>
+					<protocArtifact>com.google.protobuf:protoc:3.5.1-1:exe:${os.detected.classifier}</protocArtifact>
 					<pluginId>grpc-java</pluginId>
 					<pluginArtifact>io.grpc:protoc-gen-grpc-java:1.18.0:exe:${os.detected.classifier}</pluginArtifact>
 					<protoSourceRoot>${project.build.directory}/protos</protoSourceRoot>
@@ -140,17 +141,17 @@
 				<!-- NOTE: We don't need a groupId specification because the group is 
 					org.apache.maven.plugins ...which is assumed by default. -->
 				<artifactId>maven-assembly-plugin</artifactId>
-				<version>3.1.1</version>
+
 				<configuration>
 					<archive>
 						<manifest>
 							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
 							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-							<mainClass>fr.pantheonsorbonne.cri.Agent</mainClass>
+							<mainClass>fr.pantheonsorbonne.cri.app.Agent</mainClass>
 						</manifest>
 
 						<manifestEntries>
-							<Premain-Class>fr.pantheonsorbonne.cri.Agent</Premain-Class>
+							<Premain-Class>fr.pantheonsorbonne.cri.app.Agent</Premain-Class>
 						</manifestEntries>
 
 					</archive>
@@ -182,6 +183,18 @@
 	</build>
 
 	<dependencies>
+
+		<!-- https://mvnrepository.com/artifact/javax.inject/jsr330-api -->
+		
+		
+
+		<dependency>
+			<groupId>com.google.inject</groupId>
+			<artifactId>guice</artifactId>
+			<version>4.2.2</version>
+		</dependency>
+
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>

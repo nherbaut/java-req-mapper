@@ -1,4 +1,4 @@
-package fr.pantheonsorbonne.cri;
+package fr.pantheonsorbonne.cri.req;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,6 +8,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.google.common.base.Strings;
+import com.google.inject.Inject;
+
+import fr.pantheonsorbonne.cri.app.Agent;
+import fr.pantheonsorbonne.cri.configuration.AppConfigurationVariables;
 
 public class StackTraceParser {
 
@@ -22,22 +26,26 @@ public class StackTraceParser {
 	public static final String ANSI_WHITE = "\u001B[37m";
 
 	private StackTraceElement[] elements;
+	private AppConfigurationVariables vars;
+	private Collection<ReqMatcher> reqMatchers;
 
-	public StackTraceParser(StackTraceElement[] elements) {
+	public StackTraceParser(StackTraceElement[] elements, AppConfigurationVariables vars,
+			Collection<ReqMatcher> reqMatchers) {
 		this.elements = elements;
+		this.vars = vars;
+		this.reqMatchers = reqMatchers;
 	}
 
 	public Set<String> getReqs() {
 
 		Set<String> res = new HashSet<>();
 		for (StackTraceElement elt : elements) {
-			if (elt.getClassName().startsWith(Agent.INSTRUMENTED_PACKAGE) && elt.getLineNumber() != -1) {
+			if (elt.getClassName().startsWith(this.vars.getInstrumentedPackage()) && elt.getLineNumber() != -1) {
 				String classNAme = elt.getClassName();
 				String methodName = elt.getMethodName().split("\\$")[0];
-				Integer lineNumber = elt.getLineNumber();//can we use that?
+				Integer lineNumber = elt.getLineNumber();// can we use that?
 
-				
-				for (ReqMatcher m : Agent.reqMatchers) {
+				for (ReqMatcher m : reqMatchers) {
 					if (m.getClassName().equals(classNAme)) {
 						if (m.getMethodName().equals(methodName)) {
 
