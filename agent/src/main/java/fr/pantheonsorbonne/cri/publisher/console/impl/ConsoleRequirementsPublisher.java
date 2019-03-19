@@ -1,4 +1,4 @@
-package fr.pantheonsorbonne.cri.req;
+package fr.pantheonsorbonne.cri.publisher.console.impl;
 
 import java.util.Collection;
 import java.util.logging.Level;
@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 
 import com.google.inject.Inject;
 
+import fr.pantheonsorbonne.cri.publisher.RequirementPublisher;
 import fr.pantheonsorbonne.cri.requirements.Requirement;
 
 public class ConsoleRequirementsPublisher implements RequirementPublisher {

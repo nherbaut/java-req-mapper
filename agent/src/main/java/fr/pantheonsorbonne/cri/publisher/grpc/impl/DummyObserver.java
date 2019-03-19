@@ -1,4 +1,4 @@
-package fr.pantheonsorbonne.cri.net.grpc;
+package fr.pantheonsorbonne.cri.publisher.grpc.impl;
 
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;

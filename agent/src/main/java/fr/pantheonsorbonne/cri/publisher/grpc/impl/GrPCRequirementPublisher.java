@@ -1,8 +1,8 @@
-package fr.pantheonsorbonne.cri.net.grpc;
+package fr.pantheonsorbonne.cri.publisher.grpc.impl;
 
 import com.google.inject.Inject;
 
-import fr.pantheonsorbonne.cri.req.AbstractRequirementPublisher;
+import fr.pantheonsorbonne.cri.publisher.AbstractRequirementPublisher;
 import fr.pantheonsorbonne.cri.requirements.Empty;
 import fr.pantheonsorbonne.cri.requirements.ReqCollectorGrpc.ReqCollectorStub;
 import fr.pantheonsorbonne.cri.requirements.Requirement;

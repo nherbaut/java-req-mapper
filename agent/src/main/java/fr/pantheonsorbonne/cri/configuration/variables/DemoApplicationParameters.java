@@ -1,6 +1,11 @@
-package fr.pantheonsorbonne.cri.configuration;
+package fr.pantheonsorbonne.cri.configuration.variables;
 
-public class AppConfigurationVariables implements ConfigurationVariableProvider {
+import com.google.inject.Inject;
+
+import fr.pantheonsorbonne.cri.configuration.RequirementIssueDecorator;
+import fr.pantheonsorbonne.cri.mapping.impl.diff.GitHubRequirementIssueDecorator;
+
+public class DemoApplicationParameters implements ApplicationParameters {
 
 	public enum SourceRootDIR {
 		MAVEN("src/main/java");
@@ -38,8 +43,8 @@ public class AppConfigurationVariables implements ConfigurationVariableProvider 
 	}
 
 	@Override
-	public RequirementIssueDecorator getIssueBaseURL() {
-		return new GitHubRequirementIssueDecorator("https://github.com/nherbaut/basic-cli-uni/issues");
+	public RequirementIssueDecorator getRequirementIssueDecorator() {
+		return new GitHubRequirementIssueDecorator("http://github.com/nherbaut/basic-cli-uni/issues/");
 	}
 
 }

@@ -1,9 +1,10 @@
-package fr.pantheonsorbonne.cri.inst.bbuddy;
+package fr.pantheonsorbonne.cri.instrumentation.impl.bytebuddy;
 
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
-import fr.pantheonsorbonne.cri.configuration.AppConfigurationVariables;
+
+import fr.pantheonsorbonne.cri.configuration.variables.DemoApplicationParameters;
 import net.bytebuddy.agent.builder.AgentBuilder;
 import net.bytebuddy.agent.builder.AgentBuilder.Identified.Extendable;
 import net.bytebuddy.description.type.TypeDescription;
@@ -12,10 +13,11 @@ import net.bytebuddy.implementation.MethodDelegation;
 import net.bytebuddy.matcher.ElementMatchers;
 import net.bytebuddy.utility.JavaModule;
 
+
 public class MethodExtractorProvider implements javax.inject.Provider<Extendable> {
 
 	@Inject
-	AppConfigurationVariables vars;
+	DemoApplicationParameters vars;
 
 	@Inject
 	MethodCallInterceptor interceptor;
@@ -28,8 +30,7 @@ public class MethodExtractorProvider implements javax.inject.Provider<Extendable
 		return new AgentBuilder.Default().type(ElementMatchers.nameStartsWith(vars.getInstrumentedPackage()))
 				.transform((Builder<?> builder, TypeDescription typeDescription, ClassLoader classLoader,
 						JavaModule module) -> builder.method(ElementMatchers.any())
-								 .intercept(MethodDelegation.to(interceptor)));
-								//.intercept(MethodDelegation.to(MethodCallInterceptor.class)));
-	}
+								.intercept(MethodDelegation.to(interceptor)));
+	};
 
 }

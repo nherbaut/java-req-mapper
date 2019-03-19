@@ -1,17 +1,12 @@
-package fr.pantheonsorbonne.cri.req;
+package fr.pantheonsorbonne.cri.mapping.impl.diff;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import com.google.common.base.Strings;
-import com.google.inject.Inject;
 
-import fr.pantheonsorbonne.cri.app.Agent;
-import fr.pantheonsorbonne.cri.configuration.AppConfigurationVariables;
+import fr.pantheonsorbonne.cri.configuration.variables.DemoApplicationParameters;
+import fr.pantheonsorbonne.cri.mapping.ReqMatcher;
 
 public class StackTraceParser {
 
@@ -26,19 +21,19 @@ public class StackTraceParser {
 	public static final String ANSI_WHITE = "\u001B[37m";
 
 	private StackTraceElement[] elements;
-	private AppConfigurationVariables vars;
+	private DemoApplicationParameters vars;
 	private Collection<ReqMatcher> reqMatchers;
 
-	public StackTraceParser(StackTraceElement[] elements, AppConfigurationVariables vars,
+	public StackTraceParser(StackTraceElement[] elements, DemoApplicationParameters vars,
 			Collection<ReqMatcher> reqMatchers) {
 		this.elements = elements;
 		this.vars = vars;
 		this.reqMatchers = reqMatchers;
 	}
 
-	public Set<String> getReqs() {
+	public Collection<String> getReqs() {
 
-		Set<String> res = new HashSet<>();
+		Collection<String> res = new HashSet<>();
 		for (StackTraceElement elt : elements) {
 			if (elt.getClassName().startsWith(this.vars.getInstrumentedPackage()) && elt.getLineNumber() != -1) {
 				String classNAme = elt.getClassName();

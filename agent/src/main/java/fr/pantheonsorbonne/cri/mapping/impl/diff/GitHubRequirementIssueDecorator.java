@@ -1,7 +1,8 @@
-package fr.pantheonsorbonne.cri.configuration;
+package fr.pantheonsorbonne.cri.mapping.impl.diff;
 
 import java.net.URI;
 
+import fr.pantheonsorbonne.cri.configuration.RequirementIssueDecorator;
 import fr.pantheonsorbonne.cri.requirements.Requirement;
 
 public class GitHubRequirementIssueDecorator implements RequirementIssueDecorator {

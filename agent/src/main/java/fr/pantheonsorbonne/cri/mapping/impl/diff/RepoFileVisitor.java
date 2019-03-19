@@ -1,4 +1,4 @@
-package fr.pantheonsorbonne.cri.versioning;
+package fr.pantheonsorbonne.cri.mapping.impl.diff;
 
 import java.nio.CharBuffer;
 import java.nio.file.FileVisitResult;
@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -45,9 +46,10 @@ import com.google.common.io.CharStreams;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 
-import fr.pantheonsorbonne.cri.configuration.AppConfigurationVariables;
-import fr.pantheonsorbonne.cri.configuration.ConfigurationVariableProvider;
-import fr.pantheonsorbonne.cri.req.ReqMatcher;
+import fr.pantheonsorbonne.cri.configuration.variables.DemoApplicationParameters;
+import fr.pantheonsorbonne.cri.configuration.variables.ApplicationParameters;
+import fr.pantheonsorbonne.cri.mapping.ReqMatcher;
+import fr.pantheonsorbonne.cri.mapping.RequirementMappingProvider;
 
 import static java.nio.file.FileVisitResult.*;
 
@@ -56,18 +58,19 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-public class RepoFileVisitor extends SimpleFileVisitor<Path> {
+public class RepoFileVisitor extends SimpleFileVisitor<Path> implements RequirementMappingProvider {
 
 	private Git repo;
 	private final Map<String, Map<Integer, String>> blameData = new HashMap<>();
 	private final Set<ReqMatcher> reqMatchers = new HashSet<>();
 	private final Path sourceRootDir;
 
-	public Set<ReqMatcher> getReqMatcher() {
+	public Collection<ReqMatcher> getReqMatcher() {
 		return reqMatchers;
 	}
 
-	public RepoFileVisitor(ConfigurationVariableProvider vars) {
+	@Inject
+	public RepoFileVisitor(ApplicationParameters vars) {
 		this.sourceRootDir = new File(vars.getSourceRootDir()).toPath();
 		try {
 
@@ -200,8 +203,8 @@ public class RepoFileVisitor extends SimpleFileVisitor<Path> {
 
 			}
 
-			String inferedClassName = this.sourceRootDir.relativize(relativeFilePath.toPath())
-					.toString().replaceAll("/", ".").replaceFirst("[.][^.]+$", "");
+			String inferedClassName = this.sourceRootDir.relativize(relativeFilePath.toPath()).toString()
+					.replaceAll("/", ".").replaceFirst("[.][^.]+$", "");
 			this.blameData.put(inferedClassName, fileBlameData);
 
 		}

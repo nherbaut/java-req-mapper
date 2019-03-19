@@ -1,4 +1,4 @@
-package fr.pantheonsorbonne.cri.req;
+package fr.pantheonsorbonne.cri.publisher;
 
 import java.util.Collection;
 import java.util.Set;

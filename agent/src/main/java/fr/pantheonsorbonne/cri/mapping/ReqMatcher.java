@@ -1,4 +1,4 @@
-package fr.pantheonsorbonne.cri.req;
+package fr.pantheonsorbonne.cri.mapping;
 
 import java.util.Arrays;
 import java.util.HashSet;
