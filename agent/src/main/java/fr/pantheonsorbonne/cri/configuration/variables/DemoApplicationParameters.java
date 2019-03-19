@@ -3,7 +3,7 @@ package fr.pantheonsorbonne.cri.configuration.variables;
 import com.google.inject.Inject;
 
 import fr.pantheonsorbonne.cri.configuration.RequirementIssueDecorator;
-import fr.pantheonsorbonne.cri.mapping.impl.diff.GitHubRequirementIssueDecorator;
+import fr.pantheonsorbonne.cri.mapping.GitHubRequirementIssueDecorator;
 
 public class DemoApplicationParameters implements ApplicationParameters {
 

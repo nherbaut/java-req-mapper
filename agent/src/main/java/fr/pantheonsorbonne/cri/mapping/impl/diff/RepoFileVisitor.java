@@ -44,9 +44,7 @@ import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import com.google.common.io.CharStreams;
 
 import com.google.inject.Inject;
-import com.google.inject.Provides;
 
-import fr.pantheonsorbonne.cri.configuration.variables.DemoApplicationParameters;
 import fr.pantheonsorbonne.cri.configuration.variables.ApplicationParameters;
 import fr.pantheonsorbonne.cri.mapping.ReqMatcher;
 import fr.pantheonsorbonne.cri.mapping.RequirementMappingProvider;
@@ -190,14 +188,14 @@ public class RepoFileVisitor extends SimpleFileVisitor<Path> implements Requirem
 			BlameResult blamed = blamer.call();
 
 			int lines = countLinesOfFileInCommit(this.repo.getRepository(), commitID, relativeFilePath.toString());
-			System.out.println(file);
-			HashMap<Integer, String> fileBlameData = new HashMap<>();
+
+			Map<Integer, String> fileBlameData = new HashMap<>();
 			for (int i = 0; i < lines; i++) {
 				RevCommit commit = blamed.getSourceCommit(i);
 				Pattern p = Pattern.compile(".*(#[0-9]+)");
 				Matcher m = p.matcher(commit.getShortMessage());
 				if (m.matches()) {
-					System.out.println("Line: " + i + ": " + m.group(1));
+
 					fileBlameData.put(i, m.group(1));
 				}
 

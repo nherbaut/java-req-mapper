@@ -1,4 +1,4 @@
-package fr.pantheonsorbonne.cri.mapping.impl.diff;
+package fr.pantheonsorbonne.cri.mapping;
 
 import java.net.URI;
 

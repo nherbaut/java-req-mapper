@@ -24,9 +24,17 @@ public class Agent {
 
 		// gather all modules to be used in the IC
 		Module applicationConfiguraiton = new AppConfiguration();
-		Module publisherConfiguration = new GRPCPublisherConfiguration();
-		Module requirementMappingConfiguration = new RequirementMappingConfiguration();
+		
+		//how to I find what's executed?
 		Module instrumentationConfiguration = new InstrumentationConfiguration(instZ);
+		
+		//how do I match what's executed to a requirment?
+		Module requirementMappingConfiguration = new RequirementMappingConfiguration();
+		
+		//how do I tell the world?
+		Module publisherConfiguration = new GRPCPublisherConfiguration();
+		
+		
 
 		// consolidate modules
 		Module conf = Modules.combine(applicationConfiguraiton, requirementMappingConfiguration,
